@@ -2,19 +2,32 @@
 <html>
 <head>
     <title>Products</title>
+    <style>
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Product List</h1>
-    <a href="{% url 'view_cart' %}">View Cart</a>
+    <h1>🛍️ All Products</h1>
+
+    <!-- Cart link with emoji -->
+    <a href="{% url 'cart_view' %}" style="float: right; font-size: 24px;">🛒 Cart</a>
+
+    <h2>Add Product to Cart</h2>
+    <form method="post" action="{% url 'add_to_cart' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Product Name" required>
+        <input type="number" step="0.01" name="price" placeholder="Price" required>
+        <input type="number" name="quantity" placeholder="Quantity" value="1" min="1">
+        <button type="submit">Add to Cart</button>
+    </form>
+
+    <h2>Store Products</h2>
     <ul>
-        {% for product in products %}
-            <li>
-                <strong>{{ product.name }}</strong><br>
-                Price: ${{ product.price }}<br>
-                {{ product.description }}<br>
-                <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
-            </li>
-        {% endfor %}
+    {% for product in products %}
+        <li>{{ product.name }} - ${{ product.price }}</li>
+    {% endfor %}
     </ul>
 </body>
 </html>
